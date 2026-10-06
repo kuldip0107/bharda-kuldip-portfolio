@@ -65,14 +65,7 @@ export default function Hero() {
       <div
         className="hero-background"
         style={{ transform: `translateY(${parallaxOffset}px)` }}
-      >
-        <div className="floating-elements">
-          <div className="floating-element element-1" style={{ animationDelay: '0s' }}></div>
-          <div className="floating-element element-2" style={{ animationDelay: '0.5s' }}></div>
-          <div className="floating-element element-3" style={{ animationDelay: '1s' }}></div>
-          <div className="floating-element element-4" style={{ animationDelay: '1.5s' }}></div>
-        </div>
-      </div>
+      />
 
       <div className="hero-content">
         <div className="hero-image">
