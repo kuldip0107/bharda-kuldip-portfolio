@@ -40,12 +40,24 @@ export default function Header({ activeSection }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [menuOpen]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
   const handleNavClick = (e, targetId) => {
     e.preventDefault();
     setMenuOpen(false);
     const targetElement = document.querySelector(targetId);
     if (targetElement) {
-      const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+      const headerHeight = document.querySelector('header')?.offsetHeight || 70;
       const targetPosition = targetElement.offsetTop - headerHeight;
       window.scrollTo({
         top: targetPosition,
@@ -66,14 +78,14 @@ export default function Header({ activeSection }) {
   return (
     <header
       style={{
-        background: isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.85)',
+        background: isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.88)',
         boxShadow: isScrolled ? '0 4px 20px rgba(0, 0, 0, 0.1)' : 'var(--shadow)',
         transform: isHidden ? 'translateY(-100%)' : 'translateY(0)',
         transition: 'transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease',
       }}
     >
       <nav>
-        <div className="logo" style={{ cursor: 'pointer' }} onClick={(e) => handleNavClick(e, '#home')}>
+        <div className="logo" onClick={(e) => handleNavClick(e, '#home')}>
           <span className="logo-text">BK</span>
           <span className="logo-subtitle">Developer</span>
         </div>
@@ -90,35 +102,47 @@ export default function Header({ activeSection }) {
               </a>
             </li>
           ))}
+          <li className="mobile-cta-wrapper">
+            <a
+              href="#contact"
+              className="cta-button primary"
+              onClick={(e) => handleNavClick(e, '#contact')}
+            >
+              <span>Hire Me</span>
+              <i className="fas fa-paper-plane"></i>
+            </a>
+          </li>
         </ul>
 
-        <a
-          href="#contact"
-          className="nav-cta"
-          onClick={(e) => handleNavClick(e, '#contact')}
-        >
-          Hire Me
-        </a>
+        <div className="nav-actions">
+          <a
+            href="#contact"
+            className="nav-cta desktop-only"
+            onClick={(e) => handleNavClick(e, '#contact')}
+          >
+            Hire Me
+          </a>
 
-        <div
-          className={`hamburger ${menuOpen ? 'active' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation"
-          role="button"
-          tabIndex={0}
-        >
           <div
-            className="line"
-            style={menuOpen ? { transform: 'rotate(45deg) translate(5px, 5px)' } : {}}
-          />
-          <div
-            className="line"
-            style={menuOpen ? { opacity: 0 } : {}}
-          />
-          <div
-            className="line"
-            style={menuOpen ? { transform: 'rotate(-45deg) translate(7px, -6px)' } : {}}
-          />
+            className={`hamburger ${menuOpen ? 'active' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation"
+            role="button"
+            tabIndex={0}
+          >
+            <div
+              className="line"
+              style={menuOpen ? { transform: 'rotate(45deg) translate(5px, 5px)' } : {}}
+            />
+            <div
+              className="line"
+              style={menuOpen ? { opacity: 0 } : {}}
+            />
+            <div
+              className="line"
+              style={menuOpen ? { transform: 'rotate(-45deg) translate(7px, -6px)' } : {}}
+            />
+          </div>
         </div>
       </nav>
     </header>
