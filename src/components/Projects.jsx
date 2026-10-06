@@ -7,7 +7,7 @@ export default function Projects() {
       image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=300&fit=crop',
       tags: ['React Native', 'Firebase', 'Redux'],
       liveDemo: '#',
-      sourceCode: '#',
+      sourceCode: 'https://github.com/kuldip0107/',
       featured: true,
     },
     {
@@ -17,7 +17,7 @@ export default function Projects() {
       image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop',
       tags: ['React Native', 'HealthKit', 'Charts'],
       liveDemo: '#',
-      sourceCode: '#',
+      sourceCode: 'https://github.com/kuldip0107/',
       featured: false,
     },
     {
@@ -27,7 +27,7 @@ export default function Projects() {
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
       tags: ['React Native', 'Maps', 'Real-time'],
       liveDemo: '#',
-      sourceCode: '#',
+      sourceCode: 'https://github.com/kuldip0107/',
       featured: false,
     },
   ];

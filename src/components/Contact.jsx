@@ -48,56 +48,68 @@ export default function Contact({ onShowToast }) {
             </div>
 
             <div className="contact-details">
-              <div className="contact-item">
+              <a
+                href="mailto:kuldipbharda0@gmail.com"
+                className="contact-item"
+                title="Send an email to kuldipbharda0@gmail.com"
+              >
                 <i className="fas fa-envelope"></i>
                 <div>
                   <h4>Email</h4>
-                  <p>bhardakuldip0@gmail.com</p>
+                  <p>kuldipbharda0@gmail.com</p>
                 </div>
-              </div>
-              <div className="contact-item">
-                <i className="fas fa-phone"></i>
+              </a>
+              <a
+                href="https://wa.me/917265040882?text=Hi%20Kuldip%2C%20I%20would%20like%20to%20discuss%20a%20project%20with%20you."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-item"
+                title="Chat on WhatsApp: +91 7265040882"
+              >
+                <i className="fab fa-whatsapp"></i>
                 <div>
-                  <h4>Phone</h4>
-                  <p>
-                    <a href="tel:+917265040882">+91 7265040882</a>
-                  </p>
+                  <h4>WhatsApp / Phone</h4>
+                  <p>+91 7265040882</p>
                 </div>
-              </div>
+              </a>
             </div>
 
             <div className="social-links">
               <a
-                href="mailto:bhardakuldip0@gmail.com"
+                href="mailto:kuldipbharda0@gmail.com"
                 className="social-link"
                 aria-label="Email"
+                title="Email: kuldipbharda0@gmail.com"
               >
                 <i className="fas fa-envelope"></i>
               </a>
               <a
-                href="https://api.whatsapp.com/send?phone=917265040882&text=Hi%20Bharda%2C%20I%20would%20like%20to%20discuss%20a%20project%20with%20you."
+                href="https://wa.me/917265040882?text=Hi%20Kuldip%2C%20I%20would%20like%20to%20discuss%20a%20project%20with%20you."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link"
                 aria-label="WhatsApp"
+                title="WhatsApp: 7265040882"
               >
                 <i className="fab fa-whatsapp"></i>
               </a>
               <a
-                href="https://github.com/bharda-kuldip"
+                href="https://github.com/kuldip0107/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link"
                 aria-label="GitHub"
+                title="GitHub: https://github.com/kuldip0107/"
               >
                 <i className="fab fa-github"></i>
               </a>
               <a
-                href="https://linkedin.com/in/bharda-kuldip"
+                href="https://www.linkedin.com/in/bharda-kuldip/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link"
                 aria-label="LinkedIn"
+                title="LinkedIn: https://www.linkedin.com/in/bharda-kuldip/"
               >
                 <i className="fab fa-linkedin"></i>
               </a>
