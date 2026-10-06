@@ -238,61 +238,8 @@ export default function Contact({ onShowToast }) {
               </p>
             </div>
 
-            <div className="contact-details">
-              <a
-                href="mailto:kuldipbharda0@gmail.com"
-                className="contact-item email-card"
-                title="Send an email to kuldipbharda0@gmail.com"
-              >
-                <i className="fas fa-envelope"></i>
-                <div>
-                  <h4>Email</h4>
-                  <p>kuldipbharda0@gmail.com</p>
-                </div>
-              </a>
-              <a
-                href="https://wa.me/917265040882?text=Hi%20Kuldip%2C%20I%20would%20like%20to%20discuss%20a%20project%20with%20you."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-item whatsapp-card"
-                title="Chat on WhatsApp: +91 7265040882"
-              >
-                <i className="fab fa-whatsapp"></i>
-                <div>
-                  <h4>WhatsApp / Phone</h4>
-                  <p>+91 7265040882</p>
-                </div>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/bharda-kuldip/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-item linkedin-card"
-                title="Connect on LinkedIn: bharda-kuldip"
-              >
-                <i className="fab fa-linkedin-in"></i>
-                <div>
-                  <h4>LinkedIn</h4>
-                  <p>bharda-kuldip</p>
-                </div>
-              </a>
-              <a
-                href="https://github.com/kuldip0107/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-item github-card"
-                title="Explore GitHub: kuldip0107"
-              >
-                <i className="fab fa-github"></i>
-                <div>
-                  <h4>GitHub</h4>
-                  <p>kuldip0107</p>
-                </div>
-              </a>
-            </div>
-
             <div className="quick-connect-section">
-              <span className="quick-connect-tag">Quick Connect & Socials</span>
+              <span className="quick-connect-tag">Connect With Me</span>
               <div className="social-links">
                 <a
                   href="mailto:kuldipbharda0@gmail.com"
@@ -331,6 +278,16 @@ export default function Contact({ onShowToast }) {
                   title="Explore GitHub: kuldip0107"
                 >
                   <i className="fab fa-github"></i>
+                </a>
+                <a
+                  href="https://www.instagram.com/kuldip_bharda_/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link instagram-btn"
+                  aria-label="Instagram"
+                  title="Follow on Instagram: @kuldip_bharda_"
+                >
+                  <i className="fab fa-instagram"></i>
                 </a>
               </div>
             </div>
