@@ -43,15 +43,15 @@ a {
    UTILITY CLASSES & COMMON ANIMATIONS
    ========================================================================== */
 .container {
-    max-width: 1200px;
+    max-width: 1180px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 2rem;
     width: 100%;
     box-sizing: border-box;
 }
 
 section {
-    padding: 6rem 5%;
+    padding: 6rem 6%;
     width: 100%;
     box-sizing: border-box;
     position: relative;
@@ -59,12 +59,12 @@ section {
 
 .section-title {
     position: relative;
-    display: inline-block;
-    margin-bottom: 3rem;
+    display: block;
+    width: fit-content;
+    margin: 0 auto 3rem auto;
     font-size: 2.5rem;
     text-align: center;
-    left: 50%;
-    transform: translateX(-50%);
+    box-sizing: border-box;
 }
 
 .section-title::after {
@@ -1457,14 +1457,14 @@ footer {
 @media (max-width: 768px) {
     /* Base Body & Section Constraints */
     section {
-        padding: 4.5rem 1.25rem 2.5rem !important;
+        padding: 4.5rem 1.5rem 2.5rem !important;
         width: 100% !important;
         overflow-x: hidden !important;
         box-sizing: border-box !important;
     }
 
     .container {
-        padding: 0 !important;
+        padding: 0 0.25rem !important;
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 auto !important;
@@ -1473,7 +1473,11 @@ footer {
 
     .section-title {
         font-size: 2rem !important;
-        margin-bottom: 2.25rem !important;
+        margin: 0 auto 2.25rem auto !important;
+        display: block !important;
+        width: fit-content !important;
+        left: auto !important;
+        transform: none !important;
     }
 
     /* Navbar & Mobile Drawer */
@@ -1959,11 +1963,11 @@ footer {
 /* Extra Small Phones (max-width: 480px) */
 @media (max-width: 480px) {
     section {
-        padding: 4rem 1rem 2rem !important;
+        padding: 4rem 1.25rem 2rem !important;
     }
 
     nav {
-        padding: 0.75rem 1rem;
+        padding: 0.75rem 1.25rem;
     }
 
     .logo {
@@ -1975,7 +1979,7 @@ footer {
     }
 
     .hero {
-        padding: 5.5rem 1rem 3rem !important;
+        padding: 5.5rem 1.25rem 3rem !important;
     }
 
     .hero h1 {
@@ -1993,7 +1997,11 @@ footer {
 
     .section-title {
         font-size: 1.75rem !important;
-        margin-bottom: 2rem !important;
+        margin: 0 auto 2rem auto !important;
+        display: block !important;
+        width: fit-content !important;
+        left: auto !important;
+        transform: none !important;
     }
 
     .about-stats {
