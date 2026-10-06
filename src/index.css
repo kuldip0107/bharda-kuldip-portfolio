@@ -1551,6 +1551,67 @@ footer {
 
 
 /* ==========================================================================
+   SUBTLE CURSOR GLOW EFFECT (STRIPE / VERCEL STYLE)
+   ========================================================================== */
+.cursor-glow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 998;
+    overflow: hidden;
+    transition: opacity 0.4s ease;
+}
+
+.cursor-glow-outer {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    margin-left: -300px;
+    margin-top: -300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.14) 0%, rgba(56, 189, 248, 0.07) 35%, rgba(14, 165, 233, 0) 70%);
+    pointer-events: none;
+    will-change: transform;
+    filter: blur(8px);
+}
+
+.cursor-glow-inner {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    margin-left: -65px;
+    margin-top: -65px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(56, 189, 248, 0.1) 40%, rgba(14, 165, 233, 0) 75%);
+    pointer-events: none;
+    will-change: transform;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), margin 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+/* On hover over interactive elements (buttons, links, cards, inputs) */
+.cursor-glow-container.is-hovering .cursor-glow-inner {
+    width: 190px;
+    height: 190px;
+    margin-left: -95px;
+    margin-top: -95px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.32) 0%, rgba(56, 189, 248, 0.15) 45%, rgba(14, 165, 233, 0) 75%);
+}
+
+.cursor-glow-container.is-hovering .cursor-glow-outer {
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.2) 0%, rgba(56, 189, 248, 0.1) 40%, rgba(14, 165, 233, 0) 70%);
+}
+
+/* Completely hidden on touch screens and mobile devices */
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
+    .cursor-glow-container {
+        display: none !important;
+    }
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN SYSTEM (ALL BREAKPOINTS GROUPED AT BOTTOM)
    ========================================================================== */
 
