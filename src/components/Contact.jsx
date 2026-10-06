@@ -3,35 +3,159 @@ import { useState } from 'react';
 export default function Contact({ onShowToast }) {
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     email: '',
     subject: '',
     message: '',
   });
+
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateField = (name, value) => {
+    let error = '';
+    const trimmed = value.trim();
+
+    switch (name) {
+      case 'name':
+        if (!trimmed) {
+          error = 'Please enter your name.';
+        } else if (trimmed.length < 2) {
+          error = 'Name must be at least 2 characters.';
+        }
+        break;
+
+      case 'phone':
+        if (!trimmed) {
+          error = 'Please enter your mobile number.';
+        } else {
+          // Allow international format, min 10 digits
+          const cleaned = trimmed.replace(/[\s\-\(\)]/g, '');
+          if (!/^(\+?\d{1,4})?\d{10}$/.test(cleaned)) {
+            error = 'Please enter a valid 10-digit mobile number.';
+          }
+        }
+        break;
+
+      case 'email':
+        if (!trimmed) {
+          error = 'Please enter your email address.';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+          error = 'Please enter a valid email address.';
+        }
+        break;
+
+      case 'subject':
+        if (!trimmed) {
+          error = 'Please enter a subject.';
+        } else if (trimmed.length < 3) {
+          error = 'Subject must be at least 3 characters.';
+        }
+        break;
+
+      case 'message':
+        if (!trimmed) {
+          error = 'Please enter your message.';
+        } else if (trimmed.length < 10) {
+          error = 'Message must be at least 10 characters.';
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    return error;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (touched[name]) {
+      const fieldError = validateField(name, value);
+      setErrors((prev) => ({ ...prev, [name]: fieldError }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const fieldError = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: fieldError }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate all fields
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      const error = validateField(key, formData[key]);
+      if (error) {
+        newErrors[key] = error;
+      }
+    });
+
+    setErrors(newErrors);
+    setTouched({
+      name: true,
+      phone: true,
+      email: true,
+      subject: true,
+      message: true,
+    });
+
+    // Focus first invalid field if any
+    const errorKeys = Object.keys(newErrors);
+    if (errorKeys.length > 0) {
+      if (onShowToast) {
+        onShowToast('Please fill all required fields correctly.', 'info');
+      }
+      const firstField = document.querySelector(`[name="${errorKeys[0]}"]`);
+      if (firstField) {
+        firstField.focus();
+      }
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate submission
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
-      setIsSubmitting(false);
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      });
-      if (onShowToast) {
-        onShowToast("Message sent successfully! I'll get back to you soon.", 'success');
-      }
-    }, 1500);
+    // Format WhatsApp Message with full details
+    const wpMessage = `*New Portfolio Inquiry:*
+━━━━━━━━━━━━━━━━━━━━
+👤 *Name:* ${formData.name.trim()}
+📱 *Phone:* ${formData.phone.trim()}
+📧 *Email:* ${formData.email.trim()}
+📌 *Subject:* ${formData.subject.trim()}
+💬 *Message:*
+${formData.message.trim()}
+━━━━━━━━━━━━━━━━━━━━`;
+
+    const whatsappUrl = `https://wa.me/917265040882?text=${encodeURIComponent(wpMessage)}`;
+
+    if (onShowToast) {
+      onShowToast('Opening WhatsApp to send your message...', 'success');
+    }
+
+    // Reset form state
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      subject: '',
+      message: '',
+    });
+    setTouched({});
+    setErrors({});
+    setIsSubmitting(false);
+
+    // Open WhatsApp directly without delay to prevent mobile popup blocking
+    const newWindow = window.open(whatsappUrl, '_blank');
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      window.location.href = whatsappUrl;
+    }
   };
 
   return (
@@ -116,62 +240,125 @@ export default function Contact({ onShowToast }) {
             </div>
           </div>
 
-          <form id="contact-form" className="contact-form" onSubmit={handleSubmit}>
-            <div className="form-group input-with-icon">
+          <form id="contact-form" className="contact-form" onSubmit={handleSubmit} noValidate>
+            {/* Name Field */}
+            <div className={`form-group input-with-icon ${errors.name && touched.name ? 'has-error-field' : ''}`}>
               <i className="fas fa-user field-icon" aria-hidden="true"></i>
               <input
                 type="text"
                 name="name"
-                placeholder="Your Name"
+                placeholder="Your Name *"
                 value={formData.name}
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.name && touched.name ? 'has-error' : ''}
                 required
                 autoComplete="name"
               />
+              {errors.name && touched.name && (
+                <span className="field-error">
+                  <i className="fas fa-exclamation-circle"></i> {errors.name}
+                </span>
+              )}
             </div>
-            <div className="form-group input-with-icon">
+
+            {/* Phone / Mobile Number Field */}
+            <div className={`form-group input-with-icon ${errors.phone && touched.phone ? 'has-error-field' : ''}`}>
+              <i className="fas fa-mobile-alt field-icon" aria-hidden="true"></i>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Your Mobile Number *"
+                value={formData.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.phone && touched.phone ? 'has-error' : ''}
+                required
+                autoComplete="tel"
+              />
+              {errors.phone && touched.phone && (
+                <span className="field-error">
+                  <i className="fas fa-exclamation-circle"></i> {errors.phone}
+                </span>
+              )}
+            </div>
+
+            {/* Email Field */}
+            <div className={`form-group input-with-icon ${errors.email && touched.email ? 'has-error-field' : ''}`}>
               <i className="fas fa-envelope field-icon" aria-hidden="true"></i>
               <input
                 type="email"
                 name="email"
-                placeholder="Your Email"
+                placeholder="Your Email Address *"
                 value={formData.email}
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.email && touched.email ? 'has-error' : ''}
                 required
                 autoComplete="email"
               />
+              {errors.email && touched.email && (
+                <span className="field-error">
+                  <i className="fas fa-exclamation-circle"></i> {errors.email}
+                </span>
+              )}
             </div>
-            <div className="form-group input-with-icon">
+
+            {/* Subject Field */}
+            <div className={`form-group input-with-icon ${errors.subject && touched.subject ? 'has-error-field' : ''}`}>
               <i className="fas fa-heading field-icon" aria-hidden="true"></i>
               <input
                 type="text"
                 name="subject"
-                placeholder="Subject"
+                placeholder="Subject *"
                 value={formData.subject}
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.subject && touched.subject ? 'has-error' : ''}
                 required
               />
+              {errors.subject && touched.subject && (
+                <span className="field-error">
+                  <i className="fas fa-exclamation-circle"></i> {errors.subject}
+                </span>
+              )}
             </div>
-            <div className="form-group input-with-icon">
+
+            {/* Message Field */}
+            <div className={`form-group input-with-icon ${errors.message && touched.message ? 'has-error-field' : ''}`}>
               <i className="fas fa-comment-alt field-icon textarea-icon" aria-hidden="true"></i>
               <textarea
                 name="message"
-                placeholder="Your Message"
+                placeholder="Your Message (minimum 10 characters) *"
                 rows="4"
                 value={formData.message}
                 onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.message && touched.message ? 'has-error' : ''}
                 required
               ></textarea>
+              {errors.message && touched.message && (
+                <span className="field-error">
+                  <i className="fas fa-exclamation-circle"></i> {errors.message}
+                </span>
+              )}
             </div>
-            <button type="submit" className="cta-button primary" disabled={isSubmitting}>
+
+            {/* Submit Button with WhatsApp Indicator */}
+            <button
+              type="submit"
+              className="cta-button primary submit-whatsapp-btn"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <i className="fas fa-spinner fa-spin"></i>
-                  <span>Sending...</span>
+                  <span>Connecting WhatsApp...</span>
                 </>
               ) : (
                 <>
-                  <span>Send Message</span>
+                  <i className="fab fa-whatsapp" style={{ fontSize: '1.25rem' }}></i>
+                  <span>Send Message on WhatsApp</span>
                   <i className="fas fa-paper-plane"></i>
                 </>
               )}
