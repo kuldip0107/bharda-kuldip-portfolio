@@ -17,7 +17,7 @@ export default function Contact({ onShowToast }) {
 
   const validateField = (name, value) => {
     let error = '';
-    const trimmed = value.trim();
+    const trimmed = (value || '').trim();
 
     switch (name) {
       case 'name':
@@ -25,6 +25,10 @@ export default function Contact({ onShowToast }) {
           error = 'Please enter your name.';
         } else if (trimmed.length < 2) {
           error = 'Name must be at least 2 characters.';
+        } else if (trimmed.length > 50) {
+          error = 'Name cannot exceed 50 characters.';
+        } else if (!/^[a-zA-Z\s.'-]+$/.test(trimmed)) {
+          error = 'Name should only contain letters and spaces.';
         }
         break;
 
@@ -32,10 +36,33 @@ export default function Contact({ onShowToast }) {
         if (!trimmed) {
           error = 'Please enter your mobile number.';
         } else {
-          // Allow international format, min 10 digits
-          const cleaned = trimmed.replace(/[\s\-\(\)]/g, '');
-          if (!/^(\+?\d{1,4})?\d{10}$/.test(cleaned)) {
-            error = 'Please enter a valid 10-digit mobile number.';
+          // Extract only digits
+          const digitsOnly = trimmed.replace(/\D/g, '');
+
+          // Disallow repeating dummy numbers like 0000000000, 1111111111
+          if (/^(\d)\1{9,}$/.test(digitsOnly)) {
+            error = 'Please enter a valid mobile number.';
+          } else if (digitsOnly.length < 10) {
+            error = 'Mobile number must be at least 10 digits.';
+          } else if (digitsOnly.length > 15) {
+            error = 'Mobile number cannot exceed 15 digits.';
+          } else if (digitsOnly.length === 10) {
+            // Standard 10-digit Indian mobile number check (starts with 6, 7, 8, 9)
+            if (!/^[6-9]\d{9}$/.test(digitsOnly)) {
+              error = 'Mobile number must start with 6, 7, 8, or 9.';
+            }
+          } else if (digitsOnly.length === 12 && digitsOnly.startsWith('91')) {
+            // Number with +91 country code
+            const remaining = digitsOnly.slice(2);
+            if (!/^[6-9]\d{9}$/.test(remaining)) {
+              error = 'Valid 10-digit mobile number required after +91.';
+            }
+          } else {
+            // General international format check
+            const phoneFormatRegex = /^(\+?\d{1,4}[-.\s]?)?(\(?\d{2,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{3,4}$/;
+            if (!phoneFormatRegex.test(trimmed)) {
+              error = 'Please enter a valid mobile number.';
+            }
           }
         }
         break;
@@ -43,8 +70,13 @@ export default function Contact({ onShowToast }) {
       case 'email':
         if (!trimmed) {
           error = 'Please enter your email address.';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-          error = 'Please enter a valid email address.';
+        } else if (trimmed.length > 100) {
+          error = 'Email address cannot exceed 100 characters.';
+        } else {
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          if (!emailRegex.test(trimmed)) {
+            error = 'Please enter a valid email address (e.g. name@example.com).';
+          }
         }
         break;
 
@@ -53,6 +85,8 @@ export default function Contact({ onShowToast }) {
           error = 'Please enter a subject.';
         } else if (trimmed.length < 3) {
           error = 'Subject must be at least 3 characters.';
+        } else if (trimmed.length > 100) {
+          error = 'Subject cannot exceed 100 characters.';
         }
         break;
 
@@ -60,7 +94,9 @@ export default function Contact({ onShowToast }) {
         if (!trimmed) {
           error = 'Please enter your message.';
         } else if (trimmed.length < 10) {
-          error = 'Message must be at least 10 characters.';
+          error = `Message is too short (${trimmed.length}/10 characters minimum).`;
+        } else if (trimmed.length > 1500) {
+          error = 'Message cannot exceed 1500 characters.';
         }
         break;
 
@@ -72,7 +108,13 @@ export default function Contact({ onShowToast }) {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    // Auto-filter invalid characters in mobile number as user types
+    if (name === 'phone') {
+      value = value.replace(/[^\d+\s\-()]/g, '');
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (touched[name]) {
@@ -118,6 +160,7 @@ export default function Contact({ onShowToast }) {
       const firstField = document.querySelector(`[name="${errorKeys[0]}"]`);
       if (firstField) {
         firstField.focus();
+        firstField.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       return;
     }
@@ -297,6 +340,7 @@ export default function Contact({ onShowToast }) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.name && touched.name ? 'has-error' : ''}
+                maxLength={50}
                 required
                 autoComplete="name"
               />
@@ -313,11 +357,13 @@ export default function Contact({ onShowToast }) {
               <input
                 type="tel"
                 name="phone"
-                placeholder="Your Mobile Number *"
+                placeholder="Your Mobile Number (e.g. 9876543210) *"
                 value={formData.phone}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.phone && touched.phone ? 'has-error' : ''}
+                inputMode="tel"
+                maxLength={16}
                 required
                 autoComplete="tel"
               />
@@ -334,11 +380,12 @@ export default function Contact({ onShowToast }) {
               <input
                 type="email"
                 name="email"
-                placeholder="Your Email Address *"
+                placeholder="Your Email Address (e.g. name@example.com) *"
                 value={formData.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.email && touched.email ? 'has-error' : ''}
+                maxLength={100}
                 required
                 autoComplete="email"
               />
@@ -360,6 +407,7 @@ export default function Contact({ onShowToast }) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.subject && touched.subject ? 'has-error' : ''}
+                maxLength={100}
                 required
               />
               {errors.subject && touched.subject && (
@@ -380,6 +428,7 @@ export default function Contact({ onShowToast }) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.message && touched.message ? 'has-error' : ''}
+                maxLength={1500}
                 required
               ></textarea>
               {errors.message && touched.message && (
