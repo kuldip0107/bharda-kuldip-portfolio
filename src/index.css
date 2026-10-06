@@ -621,7 +621,7 @@ header::after {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -630,24 +630,22 @@ header::after {
 }
 
 .service-card {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 20px;
+    background-color: var(--white);
+    border-radius: 16px;
     padding: 2.25rem 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08);
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    border: 1px solid rgba(14, 165, 233, 0.15);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(2, 132, 199, 0.16);
-    border-color: rgba(14, 165, 233, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
 }
 
 .service-top {
@@ -1401,7 +1399,8 @@ footer {
     .hero-content {
         gap: 2.5rem;
     }
-    .services-grid {
+    .services-grid,
+    .project-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -1649,9 +1648,11 @@ footer {
     .services-grid {
         display: flex !important;
         flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
         width: 100% !important;
         max-width: 100% !important;
-        gap: 1.25rem !important;
+        gap: 1.5rem !important;
         margin: 0 auto !important;
         padding: 0 !important;
         box-sizing: border-box !important;
@@ -1660,14 +1661,18 @@ footer {
     .service-card {
         width: 100% !important;
         max-width: 100% !important;
+        margin: 0 auto !important;
         box-sizing: border-box !important;
+        background-color: var(--white) !important;
+        border-radius: 16px !important;
+        box-shadow: var(--shadow) !important;
+        overflow: hidden !important;
         padding: 1.5rem 1.25rem !important;
-        margin: 0 !important;
-        border-radius: 18px !important;
+        border: 1px solid rgba(14, 165, 233, 0.12) !important;
     }
 
     .service-title {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
     }
 
     .service-description {
@@ -1676,38 +1681,48 @@ footer {
     }
 
     .service-features li {
-        font-size: 0.82rem;
+        font-size: 0.85rem;
     }
 
     .services-cta-banner {
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        padding: 1.75rem 1.25rem !important;
+        padding: 1.5rem 1.25rem !important;
         margin: 2rem auto 0 !important;
-        border-radius: 18px !important;
+        border-radius: 16px !important;
         text-align: center !important;
+        overflow: hidden !important;
     }
 
     .cta-banner-content {
         flex-direction: column !important;
         justify-content: center !important;
+        align-items: center !important;
         width: 100% !important;
+        max-width: 100% !important;
         gap: 1.25rem !important;
+        box-sizing: border-box !important;
     }
 
     .cta-banner-text h3 {
-        font-size: 1.3rem !important;
+        font-size: 1.25rem !important;
     }
 
     .cta-banner-text p {
-        font-size: 0.92rem !important;
+        font-size: 0.9rem !important;
         margin-bottom: 0.5rem !important;
     }
 
     .cta-banner-content .cta-button {
         width: 100% !important;
+        max-width: 100% !important;
         justify-content: center !important;
+        white-space: normal !important;
+        text-align: center !important;
+        padding: 0.85rem 1rem !important;
+        font-size: 0.85rem !important;
+        box-sizing: border-box !important;
     }
 
     /* Skills Section Mobile */
@@ -1948,19 +1963,6 @@ footer {
 
     .stat-label {
         font-size: 0.9rem;
-    }
-
-    .services {
-        padding: 4rem 1rem 2rem !important;
-    }
-
-    .service-card {
-        padding: 1.35rem 1rem !important;
-        border-radius: 16px !important;
-    }
-
-    .services-cta-banner {
-        padding: 1.5rem 1rem !important;
     }
 
     .cta-banner-text h3 {
