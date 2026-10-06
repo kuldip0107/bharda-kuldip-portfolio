@@ -127,23 +127,23 @@ export default function Contact({ onShowToast }) {
     setLastClientName(clientName);
 
     try {
-      // Send directly to Kuldip's email via FormSubmit AJAX endpoint using the activated token
+      // Send directly to Kuldip's email via FormSubmit AJAX endpoint using FormData
+      const payload = new FormData();
+      payload.append('Client Name', clientName);
+      payload.append('Mobile / WhatsApp', formData.phone.trim());
+      payload.append('Email Address', formData.email.trim());
+      payload.append('Inquiry Subject', formData.subject.trim());
+      payload.append('Message', formData.message.trim());
+      payload.append('_subject', `🔥 New Portfolio Inquiry: ${clientName} (${formData.phone.trim()})`);
+      payload.append('_template', 'table');
+      payload.append('_captcha', 'false');
+
       await fetch('https://formsubmit.co/ajax/aec1f73209da792de44c5df29855177b', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({
-          'Client Name': clientName,
-          'Mobile / WhatsApp': formData.phone.trim(),
-          'Email Address': formData.email.trim(),
-          'Subject': formData.subject.trim(),
-          'Message': formData.message.trim(),
-          _subject: `New Portfolio Inquiry: ${clientName} (${formData.phone.trim()})`,
-          _template: 'table',
-          _captcha: 'false',
-        }),
+        body: payload,
       });
 
       // Clear form inputs
