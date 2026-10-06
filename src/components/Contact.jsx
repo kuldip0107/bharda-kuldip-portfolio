@@ -105,7 +105,8 @@ export default function Contact({ onShowToast }) {
           </div>
 
           <form id="contact-form" className="contact-form" onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className="form-group input-with-icon">
+              <i className="fas fa-user field-icon" aria-hidden="true"></i>
               <input
                 type="text"
                 name="name"
@@ -113,9 +114,11 @@ export default function Contact({ onShowToast }) {
                 value={formData.name}
                 onChange={handleChange}
                 required
+                autoComplete="name"
               />
             </div>
-            <div className="form-group">
+            <div className="form-group input-with-icon">
+              <i className="fas fa-envelope field-icon" aria-hidden="true"></i>
               <input
                 type="email"
                 name="email"
@@ -123,9 +126,11 @@ export default function Contact({ onShowToast }) {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                autoComplete="email"
               />
             </div>
-            <div className="form-group">
+            <div className="form-group input-with-icon">
+              <i className="fas fa-heading field-icon" aria-hidden="true"></i>
               <input
                 type="text"
                 name="subject"
@@ -135,11 +140,12 @@ export default function Contact({ onShowToast }) {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="form-group input-with-icon">
+              <i className="fas fa-comment-alt field-icon textarea-icon" aria-hidden="true"></i>
               <textarea
                 name="message"
                 placeholder="Your Message"
-                rows="5"
+                rows="4"
                 value={formData.message}
                 onChange={handleChange}
                 required
